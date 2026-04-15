@@ -105,11 +105,14 @@
                     <p><a href="tel:+12504624857">(250) 462-4857</a></p>
                     <p><a href="mailto:info@seddonecontracting.com">info@seddonecontracting.com</a></p>
                 </div>
-                <form class="contact-form" action="https://formspree.io/f/xnjlnjkd" method="POST">
+                <div id="form-success" class="form-success" style="display: none; color: #27ae60; padding: 15px; background: #d5f4e6; border-radius: 5px; margin-bottom: 20px;">
+                    <strong>Thanks!</strong> Your message has been sent. We'll get back to you soon.
+                </div>
+                <form id="contact-form" class="contact-form" data-formspree="xnjlnjkd">
                     <input type="text" name="name" placeholder="Your Name" required>
                     <input type="email" name="email" placeholder="Your Email" required>
                     <textarea name="message" placeholder="Tell us about your project..." rows="5" required></textarea>
-                    <button type="submit" class="submit-button">Send Message</button>
+                    <button type="submit" class="submit-button" id="submit-btn">Send Message</button>
                 </form>
             </div>
         </div>

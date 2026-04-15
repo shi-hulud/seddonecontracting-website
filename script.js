@@ -1,26 +1,46 @@
-// Contact form handler
-document.querySelector('.contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = {
-        name: this.querySelector('input[placeholder="Your Name"]').value,
-        email: this.querySelector('input[placeholder="Your Email"]').value,
-        message: this.querySelector('textarea').value
-    };
-    
-    // For now, just show a confirmation
-    // Later we'll integrate with a backend service
-    alert(`Thanks ${formData.name}! We'll be in touch at ${formData.email}`);
-    
-    // Reset form
-    this.reset();
-});
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('contact-form');
+  const successDiv = document.getElementById('form-success');
+  const submitBtn = document.getElementById('submit-btn');
 
-// Smooth scroll for navigation links (already handled by CSS scroll-behavior)
-// but we can add active link highlighting
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', function() {
-        document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Disable button during submission
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      
+      // Collect form data
+      const formData = new FormData(form);
+      
+      try {
+        // Submit to Formspree
+        const response = await fetch('https://formspree.io/f/xnjlnjkd', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          // Show success message
+          successDiv.style.display = 'block';
+          form.style.display = 'none';
+          
+          // Scroll to success message
+          successDiv.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          alert('There was an error sending your message. Please try again.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+        }
+      } catch (error) {
+        alert('There was an error sending your message. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      }
     });
+  }
 });
